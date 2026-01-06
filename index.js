@@ -23,7 +23,6 @@ app.get("/", (req, res) => {
 });
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const db = client.db("UsersDB");
     const dbCollections = db.collection("users");
@@ -50,22 +49,20 @@ async function run() {
       res.send(result);
     });
 
-    app.patch('/users/:id',async(req,res)=>{
-      const {id} = req.params;
-      const updateUser = req.body
-      const query = {_id : new ObjectId(id)}
+    app.patch("/users/:id", async (req, res) => {
+      const { id } = req.params;
+      const updateUser = req.body;
+      const query = { _id: new ObjectId(id) };
       const updatedData = {
-        $set:{
-          name : updateUser.name,
-          password : updateUser.password
-        }
-      }
-      const options = {}
-      const result = await dbCollections.updateOne(query,updatedData,options)
-      res.send(result)
-    })
-
-
+        $set: {
+          name: updateUser.name,
+          password: updateUser.password,
+        },
+      };
+      const options = {};
+      const result = await dbCollections.updateOne(query, updatedData, options);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
